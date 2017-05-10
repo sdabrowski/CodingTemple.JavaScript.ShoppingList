@@ -10,35 +10,44 @@
     button.addEventListener("click", AddRow);
 	};
 
-
-
-
     function AddRow(){
         var inputName = document.getElementById("name").value;
-        var inputPrice = document.getElementById("price").value;
+        var inputPrice = parseFloat(document.getElementById("price").value);
+        if(!inputPrice){
+            inputPrice=0;
+        }
 
-        CreateInnerHTML(inputName, inputPrice);
+        var getList = document.getElementById("listBody");
+        var row = CreateInnerHTML(inputName, inputPrice);
+        getList.appendChild(row);
+        UpdateTotal(inputPrice);
     }
 
-    function CreateInnerHTML(name,price){
-        var getList = document.getElementById("listBody");
+    function CreateInnerHTML(name, price){
+
         var row = document.createElement("tr");
-        var cell1 = document.createElement("td");
-        var cellItem = document.createElement("td");
+        var cellEmpty = document.createElement("td");
+        var cellName = document.createElement("td");
         var cellPrice = document.createElement("td");
 
-        var textName = document.createTextNode(name);
-        var textPrice = document.createTextNode(price);
-
-        getList.appendChild(row);
-        row.appendChild(cell1);
-        row.appendChild(cellItem);
-        cellItem.appendChild(textName);
+        row.appendChild(cellEmpty);
+        row.appendChild(cellName);
+        cellName.innerHTML = name;
         row.appendChild(cellPrice);
-        cellPrice.appendChild(textPrice);
+        cellPrice.innerHTML = price;
+
+        return row;
     }
 
-
+    function UpdateTotal(price){
+        var totalElement = document.getElementById("totalPrice");
+        var currentTotal = parseFloat(totalElement.innerHTML);
+        if(!currentTotal){
+            currentTotal=0;
+        }
+        currentTotal += price;
+        totalElement.innerHTML = currentTotal;
+    }
 
 
 
